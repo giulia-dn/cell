@@ -94,7 +94,7 @@ public:
     void translateUi(QMainWindow * View){
         View->setWindowTitle(QApplication::translate("Monitor", "CELLBOX", nullptr));
         sumButton->setText(QApplication::translate("Monitor", "SUM", nullptr));
-        meanButton->setText(QApplication::translate("Monitor", "MEAN", nullptr));
+        meanButton->setText(QApplication::translate("Monitor", "MINUS", nullptr));
         maxButton->setText(QApplication::translate("Monitor", "MAX", nullptr));
         minButton->setText(QApplication::translate("Monitor", "MIN", nullptr));
         textResult->setText(QApplication::translate("Monitor", "Results :", nullptr));

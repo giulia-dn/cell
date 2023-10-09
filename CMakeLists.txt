@@ -10,7 +10,7 @@ set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
-add_executable(${PROJECT_NAME} main.cpp Cell.h CellBox.h Subject.h Observer.h View.h Monitor.h)
+add_executable(${PROJECT_NAME} main.cpp CellBox.h Subject.h Observer.h View.h Monitor.h Add.h Sum.h Max.h Min.h Mean.h)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

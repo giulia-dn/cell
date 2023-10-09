@@ -4,12 +4,14 @@
 
 class Observer {
 public:
+
     virtual ~ Observer() = default;
 
     virtual void update() = 0;
 
-    //  virtual void updateData(float data)=0;
+    virtual void upDate() = 0;
 
+    virtual void reset() = 0;
 };
 
 #endif //CELL_OBSERVER_H

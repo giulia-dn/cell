@@ -5,120 +5,108 @@
 #include "Observer.h"
 #include "CellBox.h"
 #include "Monitor.h"
-#include "Cell.h"
+#include "Add.h"
+#include "Sum.h"
+#include "Mean.h"
+#include "Max.h"
+#include "Min.h"
 
-class View: public QMainWindow, public Observer{
-    Q_OBJECT
+using namespace std;
+
+#include <string>
+
+class View : public QMainWindow, public Observer {
+Q_OBJECT
 public:
-    View(CellBox *cb, Cell *c, QWidget *parent = 0) : QMainWindow(parent), ui(new Monitor()), subject(cb), cell(c) {
-        subject->subscribe(this);
-        cell->subscribe(this);
+    View(Add *a, CellBox *s, CellBox *m, CellBox *mx, CellBox *mn, QWidget *parent = 0) : QMainWindow(parent),
+                                                                                          ui(new Monitor()),
+                                                                                          subject1(a), sum(s), mean(m),
+                                                                                          max(mx), min(mn) {
+        subject1->subscribe(this);
+        sum->subscribe(this);
+        mean->subscribe(this);
+        max->subscribe(this);
+        min->subscribe(this);
         ui->setUi(this);
         update();
     }
 
     ~View() {
-        subject->unsubscribe(this);
+        subject1->unsubscribe(this);
+        sum->unsubscribe(this);
+        mean->unsubscribe(this);
+        max->unsubscribe(this);
+        min->unsubscribe(this);
         delete ui;
     }
 
     virtual void update() override {
-        float sum = subject->getSommaR();
-        ui->textSum->setText(QString::number(sum));
-        float mean = subject->getSottraioneR();
-        ui->textMean->setText(QString::number(mean));
-        float max = subject->getMassimoR();
-        ui->textMax->setText(QString::number(max));
-        float min = subject->getMinimoR();
-        ui->textMin->setText(QString::number(min));
-        // ui->data1text->setText(ui->data1->text());
+        float s = sum->getR();
+        ui->textSum->setText(QString::number(s));
+        float m = mean->getR();
+        ui->textMean->setText(QString::number(m));
+        float mx = max->getR();
+        ui->textMax->setText(QString::number(mx));
+        float mn = min->getR();
+        ui->textMin->setText(QString::number(mn));
     }
 
-    virtual void updateData(float data) {
-        // int value = subject->getNewCell();
-
-
-    }
-
-    virtual void upData() {
-        if (count == 0) {
-            count = 0;
-            ui->dataText0->setText(ui->insData->text());
-            data = ui->insData->text().toFloat();
-            cell->setData(data);
-
-        } else if (count == 1) {
-            ui->dataText1->setText(ui->insData->text());
-            data = ui->insData->text().toFloat();
-            cell->setData(data);
-
-        } else if (count == 2) {
-            ui->dataText2->setText(ui->insData->text());
-            data = ui->insData->text().toFloat();
-            cell->setData(data);
-        } else if (count == 3) {
-            ui->dataText3->setText(ui->insData->text());
-            data = ui->insData->text().toFloat();
-            cell->setData(data);
-        } else if (count == 4) {
-            ui->dataText4->setText(ui->insData->text());
-            data = ui->insData->text().toFloat();
-            cell->setData(data);
-        } else if (count == 5) {
-            ui->dataText5->setText(ui->insData->text());
-            data = ui->insData->text().toFloat();
-            cell->setData(data);
-        }
-        count += 1;
+    virtual void upDate() {
+        ui->m_pwPending->model()->insertRow(ui->m_pwPending->model()->rowCount());
+        QModelIndex oIndex = ui->m_pwPending->model()->index(ui->m_pwPending->model()->rowCount() - 1, 0);
+        QString s = QString::number(data);
+        ui->m_pwPending->model()->setData(oIndex, s);
+        ui->insData->setText("");
     }
 
     virtual void reset() {
         count = 0;
-        ui->dataText0->setText("null");
-        ui->dataText1->setText("null");
-        ui->dataText2->setText("null");
-        ui->dataText3->setText("null");
-        ui->dataText4->setText("null");
-        ui->dataText5->setText("null");
         ui->textSum->setText(QString::number(0));
         ui->textMean->setText(QString::number(0));
         ui->textMax->setText(QString::number(0));
         ui->textMin->setText(QString::number(0));
-
+        ui->m_pwPending->clearSelection();
+        ui->m_pwPending->setModel(new QStringListModel());
     }
-
 
 private slots:
 
     void useSumButton() {
-        subject->somma();
+        sum->op();
     }
 
     void useMeanButton() {
-        subject->sottrazione();
+        mean->op();
     }
 
     void useMaxButton() {
-        subject->massimo();
+        max->op();
     }
 
     void useMinButton() {
-        subject->minimo();
+        min->op();
     }
 
     void useAdd() {
-        upData();
-        //cell->setData(data);
+        data = ui->insData->text().toFloat();
+        subject1->addLista(data);
+
     }
 
     void useRes() {
-        reset();
-        subject->clear();
+        subject1->reset();
+        sum->reset();
+        mean->reset();
+        max->reset();
+        min->reset();
     }
 
 private:
-    CellBox *subject;
-    Cell *cell;
+    Add *subject1;
+    CellBox *sum;
+    CellBox *mean;
+    CellBox *max;
+    CellBox *min;
     Monitor *ui;
     int count = 0;
     float data = 0;

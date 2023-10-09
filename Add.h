@@ -40,6 +40,10 @@ public:
         return lista;
     }
 
+    bool isNEmpty() const {
+        return nEmpty;
+    }
+
 private:
     list<float> lista;
     bool nEmpty = false;

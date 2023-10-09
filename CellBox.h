@@ -1,41 +1,135 @@
 #ifndef CELL_CELLBOX_H
 #define CELL_CELLBOX_H
-
+#include "iostream"
 #include "Cell.h"
 #include "Subject.h"
 #include "Observer.h"
 #include <list>
 using namespace std;
 
-class CellBox : public Subject{
+class CellBox : public Subject, public Observer {
 public:
-    virtual void subscribe(Observer * o) override{
+    CellBox(Cell *c) : subject(c) {
+        subject->subscribe(this);
+    }
+
+    virtual void subscribe(Observer *o) override {
         observers.push_back(o);
     }
-    virtual void unsubscribe(Observer * o) override{
+
+    virtual void unsubscribe(Observer *o) override {
         observers.remove(o);
     }
-    virtual void notify()override{
-        for(auto i=observers.begin(); i!=observers.end(); i++)
-            (*i)->update();
 
+    virtual void notify() override {
+        for (auto i = observers.begin(); i != observers.end(); i++)
+            (*i)->update();
     }
-    virtual void notifyData()override{
-        for(auto i=observers.begin(); i!=observers.end(); i++)
-            (*i)->updateData();
+
+    virtual void update() override {
+        float v = subject->getData();
+        addLista(v);
+        cout << "ok" << endl;
     }
-    void addCell(Cell * c){
+
+    void addLista(float v) {
+        if (lista.empty())
+            newCell = v;
+        lista.push_back(v);
+    }
+
+    void clear() {
+        newCell = 0;
+        sommaR = 0;
+        sottrazioneR = 0;
+        massimoR = 0;
+        minimoR = 0;
+        lista.clear();
+        //notify();
+    }
+
+    void somma() {
+        float c = 0;
+        for (auto i = lista.begin(); i != lista.end(); i++)
+            c += (*i);
+        sommaR = c;
+        notify();
+    }
+
+    void sottrazione() {
+        float c = newCell + newCell;
+        /*if (newCell < 0)
+            c = newCell;*/
+        for (auto i = lista.begin(); i != lista.end(); i++)
+            c -= (*i);
+        sottrazioneR = c;
+        notify();
+    }
+
+    void massimo() {
+        float c = newCell;
+        float p, s;
+        for (auto i = lista.begin(); i != lista.end(); i++) {
+            p = (*i);
+            if (p > c)
+                c = p;
+            for (auto i = lista.begin(); i != lista.end(); i++) {
+                s = (*i);
+                if (s > c)
+                    c = s;
+            }
+        }
+        massimoR = c;
+        notify();
+    }
+
+    void minimo() {
+        float c = newCell;
+        float p, s;
+        for (auto i = lista.begin(); i != lista.end(); i++) {
+            p = (*i);
+            if (p < c)
+                c = p;
+            for (auto i = lista.begin(); i != lista.end(); i++) {
+                s = (*i);
+                if (s < c)
+                    c = s;
+            }
+        }
+        minimoR = c;
+        notify();
+    }
+
+    float getSommaR() {
+        return sommaR;
+    }
+
+    float getSottraioneR() {
+        return sottrazioneR;
+    }
+
+    float getMassimoR() const {
+        return massimoR;
+    }
+
+    float getMinimoR() const {
+        return minimoR;
+    }
+
+    /*void addCell(Cell * c){
         if(cells.empty())
             firstMean = c->getData();
         newCell = c->getData();
         cells.push_back(c);
-        notifyData();
+
+
     }
     void sum(){
         int c = 0;
         for(auto i=cells.begin(); i!=cells.end(); i++)
             c += (*i)->getData();
-        setAddResult(c);
+        addResult=c;
+
 
     }
     void mean(){
@@ -110,16 +204,26 @@ public:
     int getNewCell() const {
         return newCell;
     }
+    virtual void notifyData(){
+        for(auto i=observers.begin(); i!=observers.end(); i++)
+            (*i)->updateData(newCell);
+
+    }
+    virtual void updateData(float data)override{
+    }*/
 
 private:
-    int addResult=0;
+    /*int addResult=0;
     int meanResult=0;
     int maxResult=0;
     int minResult=0;
-    int firstMean;
-    list <Observer*> observers;
-    list <Cell*> cells;
-    int newCell=0;
+    int firstMean;*/
+    list<Observer *> observers;
+    list<Cell *> cells;
+    float newCell = 0;
+    Cell *subject;
+    list<float> lista;
+    float sommaR = 0, sottrazioneR = 0, massimoR = 0, minimoR = 0;
 
 
 };

@@ -13,7 +13,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListView>
-
+#include <QStringListModel>
 
 
 QT_BEGIN_NAMESPACE
@@ -22,27 +22,30 @@ class Monitor{
 public:
 
     QWidget * ViewWidget;
-    QPushButton * sumButton;
-    QPushButton * meanButton;
-    QPushButton * maxButton;
-    QPushButton * minButton;
-    QLabel * textResult;
-    QLabel * textSum;
-    QLabel * textMean;
-    QLabel * textMax;
-    QLabel * textMin;
-    QLabel * textData;
-    int highData=280;
+    QPushButton *sumButton;
+    QPushButton *meanButton;
+    QPushButton *maxButton;
+    QPushButton *minButton;
+    QLabel *textResult;
+    QLabel *textSum;
+    QLabel *textMean;
+    QLabel *textMax;
+    QLabel *textMin;
+    QLabel *textData;
+    QLineEdit *insData;
+    QPushButton *add;
+    QPushButton *reset;
+    QListView *m_pwPending = nullptr;
 
-    void setUi(QMainWindow * View){
-        if(View->objectName().isEmpty())
+    void setUi(QMainWindow *View) {
+        if (View->objectName().isEmpty())
             View->setObjectName(QStringLiteral("Monitor"));
         View->resize(500, 800);
         ViewWidget = new QWidget(View);
         ViewWidget->setObjectName(QStringLiteral("Monitor"));
         sumButton = new QPushButton(ViewWidget);
         sumButton->setObjectName(QStringLiteral("sumButton"));
-        sumButton->setGeometry(QRect(20,50, 100, 20));
+        sumButton->setGeometry(QRect(20, 50, 100, 20));
         meanButton = new QPushButton(ViewWidget);
         meanButton->setObjectName(QStringLiteral("meanButton"));
         meanButton->setGeometry(QRect(20,100, 100, 20));
@@ -61,15 +64,33 @@ public:
         textMean=new QLabel(ViewWidget);
         textMean->setObjectName(QStringLiteral("textMean"));
         textMean->setGeometry(QRect(180, 100, 100, 20));
-        textMax=new QLabel(ViewWidget);
+        textMax = new QLabel(ViewWidget);
         textMax->setObjectName(QStringLiteral("textMax"));
         textMax->setGeometry(QRect(180, 150, 100, 20));
-        textMin=new QLabel(ViewWidget);
+        textMin = new QLabel(ViewWidget);
         textMin->setObjectName(QStringLiteral("textMin"));
         textMin->setGeometry(QRect(180, 200, 100, 20));
-        textData=new QLabel(ViewWidget);
+        textData = new QLabel(ViewWidget);
         textData->setObjectName(QString("textData"));
-        textData->setGeometry(QRect(20, 250, 100, 20));
+        textData->setGeometry(QRect(20, 350, 100, 20));
+
+        insData = new QLineEdit(ViewWidget);
+        insData->setObjectName(QString("insData"));
+        insData->setGeometry(QRect(20, 300, 100, 20));
+        auto dv = new QDoubleValidator(-100000000000000, 100000000000000, 2);
+        insData->setValidator(dv);
+
+        add = new QPushButton(ViewWidget);
+        add->setObjectName(QStringLiteral("add"));
+        add->setGeometry(QRect(140, 300, 100, 20));
+
+        reset = new QPushButton(ViewWidget);
+        reset->setObjectName(QStringLiteral("reset"));
+        reset->setGeometry(QRect(260, 300, 100, 20));
+
+        m_pwPending = new QListView(ViewWidget);
+        m_pwPending->setGeometry(QRect(20, 390, 200, 300));
+        m_pwPending->setModel(new QStringListModel());
 
         View->setCentralWidget(ViewWidget);
 
@@ -78,36 +99,28 @@ public:
         QObject::connect(meanButton, SIGNAL(clicked()), View, SLOT(useMeanButton()));
         QObject::connect(maxButton, SIGNAL(clicked()), View, SLOT(useMaxButton()));
         QObject::connect(minButton, SIGNAL(clicked()), View, SLOT(useMinButton()));
+        QObject::connect(add, SIGNAL(clicked()), View, SLOT(useAdd()));
+        QObject::connect(reset, SIGNAL(clicked()), View, SLOT(useRes()));
 
         QMetaObject::connectSlotsByName(View);
 
     }
-    void createData(int value){
-        QLabel * data;
-        data = new QLabel (ViewWidget);
-        data->setText(QString::number(value));
-        data->setGeometry(QRect(20,highData,100,20));
-        highData += 30;
 
-
-    }
-    void translateUi(QMainWindow * View){
+    void translateUi(QMainWindow * View) {
         View->setWindowTitle(QApplication::translate("Monitor", "CELLBOX", nullptr));
         sumButton->setText(QApplication::translate("Monitor", "SUM", nullptr));
-        meanButton->setText(QApplication::translate("Monitor", "MINUS", nullptr));
+        meanButton->setText(QApplication::translate("Monitor", "MEAN", nullptr));
         maxButton->setText(QApplication::translate("Monitor", "MAX", nullptr));
         minButton->setText(QApplication::translate("Monitor", "MIN", nullptr));
         textResult->setText(QApplication::translate("Monitor", "Results :", nullptr));
         textData->setText(QApplication::translate("Monitor", "Datas :", nullptr));
 
+        add->setText(QApplication::translate("Monitor", "ADD", nullptr));
+        reset->setText(QApplication::translate("Monitor", "RESET", nullptr));
+
     }
-
-
-
-
-
 
 };
 
- QT_END_NAMESPACE
+QT_END_NAMESPACE
 #endif //CELL_MONITOR_H

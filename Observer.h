@@ -1,11 +1,15 @@
 #ifndef CELL_OBSERVER_H
 #define CELL_OBSERVER_H
 
-class Observer{
+
+class Observer {
 public:
-    virtual ~ Observer()= default;
-    virtual void update()=0;
-    virtual void updateData()=0;
+    virtual ~ Observer() = default;
+
+    virtual void update() = 0;
+
+    //  virtual void updateData(float data)=0;
+
 };
 
 #endif //CELL_OBSERVER_H

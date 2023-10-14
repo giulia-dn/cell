@@ -12,10 +12,10 @@ class Mean : public CellBox {
 public:
     Mean(Add *a) : add(a) {}
 
-    virtual void op() override {
+    void op() override {
         lista1 = add->getLista();
         float c = 0;
-        int d = add->getR();
+        float d = add->getR();
         if (d == 0)
             mediaR = 0;
         else {
@@ -26,11 +26,11 @@ public:
         notify();
     }
 
-    virtual void reset() {
+    void reset() override {
         mediaR = 0;
     }
 
-    float getR() const {
+    float getR() const override {
         return mediaR;
     }
 

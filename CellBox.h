@@ -8,25 +8,26 @@ using namespace std;
 
 class CellBox : public Subject {
 public:
-    virtual void subscribe(Observer *o) override {
+    virtual ~CellBox() = default;
+    void subscribe(Observer *o) override {
         observers.push_back(o);
     }
 
-    virtual void unsubscribe(Observer *o) override {
+    void unsubscribe(Observer *o) override {
         observers.remove(o);
     }
 
-    virtual void notify() override {
+    void notify() override {
         for (auto i = observers.begin(); i != observers.end(); i++)
             (*i)->update();
     }
 
-    virtual void notifyData() override {
+    void notifyData() override {
         for (auto i = observers.begin(); i != observers.end(); i++)
             (*i)->upDate();
     }
 
-    virtual void notifyClear() override {
+    void notifyClear() override {
         for (auto i = observers.begin(); i != observers.end(); i++)
             (*i)->reset();
     }

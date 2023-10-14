@@ -10,27 +10,27 @@
 class Add : public CellBox {
 public:
 
-    virtual void addLista(float v) {
+    void addLista(float v) {
         lista.push_back(v);
         op();//nEmpty = true;
         notifyData();
     }
 
-    virtual void reset() override {
+    void reset() override {
         lista.clear();
-        op();//nEmpty = false;
+        op();
         notifyClear();
     }
 
-    virtual void op() override { //setta lista vuota o no(?)
+    void op() override {
         if (lista.empty())
             nEmpty = false;
         else
             nEmpty = true;
     }
 
-    virtual float getR() const override {//ritorna numero elementi lista.
-        int c = 0;
+    float getR() const override {
+        float c = 0;
         for (auto i = lista.begin(); i != lista.end(); i++)
             c += 1;
         return c;

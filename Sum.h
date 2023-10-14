@@ -12,7 +12,7 @@ class Sum : public CellBox {
 public:
     Sum(Add *a) : add(a) {}
 
-    virtual void op() override {
+    void op() override {
         lista1 = add->getLista();
         float c = 0;
         for (auto i = lista1.begin(); i != lista1.end(); i++)
@@ -21,11 +21,11 @@ public:
         notify();
     }
 
-    virtual void reset() {
+    void reset() override{
         sommaR = 0;
     }
 
-    float getR() const {
+    float getR() const override {
         return sommaR;
     }
 

@@ -12,7 +12,7 @@ class Max : public CellBox {
 public:
     Max(Add *a) : add(a) {}
 
-    virtual void op() override {
+    void op() override {
         lista1 = add->getLista();
         auto d = lista1.begin();
         float c = (*d);
@@ -31,11 +31,11 @@ public:
         notify();
     }
 
-    virtual void reset() {
+    void reset() override{
         massimoR = 0;
     }
 
-    float getR() const {
+    float getR() const override {
         return massimoR;
     }
 

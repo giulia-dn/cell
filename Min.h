@@ -12,7 +12,7 @@ class Min : public CellBox {
 public:
     Min(Add *a) : add(a) {}
 
-    virtual void op() override {
+    void op() override {
         lista1 = add->getLista();
         auto d = lista1.begin();
         float c = (*d);
@@ -31,11 +31,11 @@ public:
         notify();
     }
 
-    virtual void reset() {
+    void reset() override{
         minimoR = 0;
     }
 
-    float getR() const {
+    float getR() const override {
         return minimoR;
     }
 

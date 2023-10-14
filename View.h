@@ -31,7 +31,7 @@ public:
         update();
     }
 
-    ~View() {
+    ~View() override {
         subject1->unsubscribe(this);
         sum->unsubscribe(this);
         mean->unsubscribe(this);
@@ -40,7 +40,7 @@ public:
         delete ui;
     }
 
-    virtual void update() override {
+    void update() override {
         float s = sum->getR();
         ui->textSum->setText(QString::number(s));
         float m = mean->getR();
@@ -51,7 +51,7 @@ public:
         ui->textMin->setText(QString::number(mn));
     }
 
-    virtual void upDate() {
+    void upDate() override{
         ui->m_pwPending->model()->insertRow(ui->m_pwPending->model()->rowCount());
         QModelIndex oIndex = ui->m_pwPending->model()->index(ui->m_pwPending->model()->rowCount() - 1, 0);
         QString s = QString::number(data);
@@ -59,7 +59,7 @@ public:
         ui->insData->setText("");
     }
 
-    virtual void reset() {
+    void reset() override{
         count = 0;
         ui->textSum->setText(QString::number(0));
         ui->textMean->setText(QString::number(0));

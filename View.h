@@ -71,25 +71,13 @@ public:
 
 private slots:
 
-    void useSumButton() {
-        sum->op();
-    }
-
-    void useMeanButton() {
-        mean->op();
-    }
-
-    void useMaxButton() {
-        max->op();
-    }
-
-    void useMinButton() {
-        min->op();
-    }
-
     void useAdd() {
         data = ui->insData->text().toFloat();
         subject1->addLista(data);
+        sum->op();
+        mean->op();
+        max->op();
+        min->op();
 
     }
 

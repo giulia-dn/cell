@@ -22,10 +22,10 @@ class Monitor{
 public:
 
     QWidget * ViewWidget;
-    QPushButton *sumButton;
-    QPushButton *meanButton;
-    QPushButton *maxButton;
-    QPushButton *minButton;
+    QLabel *sum;
+    QLabel *mean;
+    QLabel *max;
+    QLabel *min;
     QLabel *textResult;
     QLabel *textSum;
     QLabel *textMean;
@@ -43,18 +43,18 @@ public:
         View->resize(500, 800);
         ViewWidget = new QWidget(View);
         ViewWidget->setObjectName(QStringLiteral("Monitor"));
-        sumButton = new QPushButton(ViewWidget);
-        sumButton->setObjectName(QStringLiteral("sumButton"));
-        sumButton->setGeometry(QRect(20, 50, 100, 20));
-        meanButton = new QPushButton(ViewWidget);
-        meanButton->setObjectName(QStringLiteral("meanButton"));
-        meanButton->setGeometry(QRect(20,100, 100, 20));
-        maxButton = new QPushButton(ViewWidget);
-        maxButton->setObjectName(QStringLiteral("maxButton"));
-        maxButton->setGeometry(QRect(20,150, 100, 20));
-        minButton = new QPushButton(ViewWidget);
-        minButton->setObjectName(QStringLiteral("minButton"));
-        minButton->setGeometry(QRect(20,200, 100, 20));
+        sum = new QLabel(ViewWidget);
+        sum->setObjectName(QStringLiteral("sumButton"));
+        sum->setGeometry(QRect(20, 50, 100, 20));
+        mean = new QLabel(ViewWidget);
+        mean->setObjectName(QStringLiteral("meanButton"));
+        mean->setGeometry(QRect(20,100, 100, 20));
+        max = new QLabel(ViewWidget);
+        max->setObjectName(QStringLiteral("maxButton"));
+        max->setGeometry(QRect(20,150, 100, 20));
+        min = new QLabel(ViewWidget);
+        min->setObjectName(QStringLiteral("minButton"));
+        min->setGeometry(QRect(20,200, 100, 20));
         textResult = new QLabel(ViewWidget);
         textResult->setObjectName(QStringLiteral("textResult"));
         textResult->setGeometry(QRect(180,20, 100, 20));
@@ -95,10 +95,6 @@ public:
         View->setCentralWidget(ViewWidget);
 
         translateUi(View);
-        QObject::connect(sumButton, SIGNAL(clicked()), View, SLOT(useSumButton()));
-        QObject::connect(meanButton, SIGNAL(clicked()), View, SLOT(useMeanButton()));
-        QObject::connect(maxButton, SIGNAL(clicked()), View, SLOT(useMaxButton()));
-        QObject::connect(minButton, SIGNAL(clicked()), View, SLOT(useMinButton()));
         QObject::connect(add, SIGNAL(clicked()), View, SLOT(useAdd()));
         QObject::connect(reset, SIGNAL(clicked()), View, SLOT(useRes()));
 
@@ -108,10 +104,10 @@ public:
 
     void translateUi(QMainWindow * View) {
         View->setWindowTitle(QApplication::translate("Monitor", "CELLBOX", nullptr));
-        sumButton->setText(QApplication::translate("Monitor", "SUM", nullptr));
-        meanButton->setText(QApplication::translate("Monitor", "MEAN", nullptr));
-        maxButton->setText(QApplication::translate("Monitor", "MAX", nullptr));
-        minButton->setText(QApplication::translate("Monitor", "MIN", nullptr));
+        sum->setText(QApplication::translate("Monitor", "SUM :", nullptr));
+        mean->setText(QApplication::translate("Monitor", "MEAN :", nullptr));
+        max->setText(QApplication::translate("Monitor", "MAX :", nullptr));
+        min->setText(QApplication::translate("Monitor", "MIN :", nullptr));
         textResult->setText(QApplication::translate("Monitor", "Results :", nullptr));
         textData->setText(QApplication::translate("Monitor", "Datas :", nullptr));
 
